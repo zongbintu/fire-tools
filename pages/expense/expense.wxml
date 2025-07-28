@@ -1,0 +1,17 @@
+<view class="container">
+  <view class="form-item">
+    <text class="label">累计家庭支出：</text>
+    <input type="digit" placeholder="请输入金额" bindinput="bindAmountInput" value="{{amount}}" />
+  </view>
+  <view class="form-item">
+  <text class="label">累计投资收益：</text>
+    <input type="digit" placeholder="请输入金额" bindinput="bindProfitInput" value="{{profit}}" />
+  </view>
+  <view class="form-item">
+    <text class="label">日期：</text>
+    <picker mode="date" value="{{date}}" fields="month" bindchange="bindDateChange">
+      <view class="picker">{{date}}</view>
+    </picker>
+  </view>
+  <button bindtap="saveExpense">保存</button>
+</view>

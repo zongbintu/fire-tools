@@ -1,0 +1,8 @@
+<view class="container">
+  <view class="chart-container">
+    <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+  </view>
+  <view class="buttons">
+    <button bindtap="navigateToExpense">记录累计开支与收益</button>
+  </view>
+</view>
