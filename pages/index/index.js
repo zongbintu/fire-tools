@@ -28,7 +28,6 @@ function initChart(canvas, width, height, dpr){
     ]
   };
   chart.setOption(option);
-  console.log('-initChart:'+chart);
   return chart;
 }
 Page({
@@ -45,12 +44,10 @@ Page({
   },
   onShow: function() {
     // 每次显示页面时，重新加载数据
-    console.log('--onShow');
     this.loadTotalData();
   },
   loadTotalData: function() {
     let expenses = wx.getStorageSync('expenses') || [];
-    console.log(JSON.stringify(expenses));
   // 取出数据中的日期 ，支出 收益
   let xData = [];
   let expenseData = [];
@@ -78,7 +75,6 @@ Page({
       }
     ]
   };
-  console.log('---'+chart);
   if(chart){
     chart.setOption(option);
   }

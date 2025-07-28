@@ -29,7 +29,7 @@ Page({
       })
       return
     }
-    // TODO 日期相同时，数据去重。按日期从小到大排序；
+    // 日期相同时，数据去重。按日期从小到大排序；
     // 获取现有的支出记录
     const record = { amount,profit, date }
     let records = wx.getStorageSync('expenses') || [];
@@ -57,7 +57,6 @@ Page({
   },
   // 保存记录到本地存储
   saveRecords: function (records) {
-    console.log('--');
     wx.setStorageSync('expenses', records)
     wx.showToast({
       title: '保存成功',
@@ -72,6 +71,5 @@ Page({
     });
     // 返回首页
     wx.navigateBack({delta:1});
-    console.log('--2121');
   }
 });
