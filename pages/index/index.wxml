@@ -4,5 +4,6 @@
   </view>
   <view class="buttons">
     <button bindtap="navigateToExpense">记录累计开支与收益</button>
+    <button open-type="share">分享</button>
   </view>
 </view>

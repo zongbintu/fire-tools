@@ -1,6 +1,49 @@
 // 首页逻辑
 import * as echarts from '../../components/ec-canvas/echarts';
 let chart = null;
+let chatData ={
+  xData: [],
+  yProfitData:[],
+  yExpenseData:[]
+}
+var chatOption={
+  tooltip: {
+    show: true,
+    trigger: 'axis'
+  },
+  xAxis: {
+    data: chatData.xData
+  },
+  yAxis: {
+    name: '金额（元）',
+    scale: true,
+    axisLabel: {
+      margin: 2,
+      formatter: function (value, index) {
+          if (value >= 10000 && value < 10000000) {
+              value = value / 10000 + "万";
+          } else if (value >= 10000000) {
+              value = value / 10000000 + "千万";
+          }
+          return value;
+      }
+  },
+  },
+  series: [
+    {
+      data: chatData.yExpenseData,
+      type: 'line',
+      smooth: true,
+      name: '家庭支出'
+    },
+    {
+      data: chatData.yProfitData,
+      type: 'line',
+      smooth: true,
+      name: '投资收益'
+    }
+  ]
+}
 function initChart(canvas, width, height, dpr){
   chart = echarts.init(canvas, null, {
     width: width,
@@ -9,25 +52,7 @@ function initChart(canvas, width, height, dpr){
   });
   canvas.setChart(chart);
 
-  var option = {
-    xAxis: {
-      data: ['202501', '202502', '202503', '202504', '202505']
-    },
-    yAxis: {},
-    series: [
-      {
-        data: [10, 22, 28, 23, 19],
-        type: 'line',
-        smooth: true
-      },
-      {
-        data: [2, 13, 40, 99],
-        type: 'line',
-        smooth: true
-      }
-    ]
-  };
-  chart.setOption(option);
+  chart.setOption(chatOption);
   return chart;
 }
 Page({
@@ -44,40 +69,34 @@ Page({
   },
   onShow: function() {
     // 每次显示页面时，重新加载数据
+    if(chart)
     this.loadTotalData();
+  },
+
+  onShareAppMessage: function () {
+    return {
+      title: '邀请您使用FIRE TOOL小程序',
+      path: '/pages/index/index',
+      imageUrl: ''
+    }
   },
   loadTotalData: function() {
     let expenses = wx.getStorageSync('expenses') || [];
-  // 取出数据中的日期 ，支出 收益
-  let xData = [];
-  let expenseData = [];
-  let profitData = [];
+  // 取出数据中的日期 ，支出 收益)
+  chatData.xData = [];
+  chatData.yExpenseData = [];
+  chatData.yProfitData = [];
+
   expenses.forEach(item=>{
-    xData.push(item.date);
-    expenseData.push(item.amount);
-    profitData.push(item.profit);
+    chatData.xData.push(item.date);
+    chatData.yExpenseData.push(item.amount);
+    chatData.yProfitData.push(item.profit);
   });
-  var option = {
-    xAxis: {
-      data: xData
-    },
-    yAxis: {},
-    series: [
-      {
-        data: expenseData,
-        type: 'line',
-        smooth: true
-      },
-      {
-        data: profitData,
-        type: 'line',
-        smooth: true
-      }
-    ]
-  };
-  if(chart){
-    chart.setOption(option);
-  }
+  chatOption.series[0].data = chatData.yExpenseData;
+  chatOption.series[1].data = chatData.yProfitData;
+  chatOption.xAxis.data = chatData.xData;
+  if(chart)
+  chart.setOption(chatOption);
   },
   navigateToExpense: function() {
     // 跳转到支出记录页面
