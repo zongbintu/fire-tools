@@ -7,9 +7,18 @@ let chatData ={
   yExpenseData:[]
 }
 var chatOption={
+  title: {
+    text: '支出收益',
+    left: 'center'
+  },
   tooltip: {
     show: true,
     trigger: 'axis'
+  },
+  legend:{
+    top: '5%',
+    left:'center',
+    orient: 'horizontal'
   },
   xAxis: {
     data: chatData.xData
@@ -59,6 +68,8 @@ Page({
   data: {
     totalExpense: 0,
     totalInvestment: 0,
+    posterPath: '',
+    showPoster: false,
     ec:{
       onInit: initChart
     }
@@ -103,5 +114,24 @@ Page({
     wx.navigateTo({
       url: '/pages/expense/expense'
     });
+  },
+  // 点击按钮生成分享图
+  onGeneratePoster:function() {
+    const ecComponent = this.selectComponent('#mychart-dom-bar');
+    
+    ecComponent.canvasToTempFilePath({
+      success: res => {
+        console.log("tempFilePath:", res.tempFilePath)
+        this.setData({
+          posterPath: res.tempFilePath,
+          showPoster: true
+        });
+        wx.showToast({ title: '长按图片即可分享/保存' });
+      },
+      fail: res => console.log(res)
+    });
+  },
+  closePoster() {
+    this.setData({ showPoster: false });
   }
 });
