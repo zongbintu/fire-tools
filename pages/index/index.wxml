@@ -3,7 +3,7 @@
     <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
   </view>
   <view class="buttons">
-    <button bindtap="navigateToExpense">记录累计开支与收益</button>
+    <button class="highlight-btn" bindtap="navigateToExpense">开始记录</button>
      <!-- 遮罩层 + 弹窗 -->
     <view wx:if="{{showPoster}}" class="mask" bindtap="closePoster">
       <view class="popup" catchtap="stopTap">
@@ -14,6 +14,11 @@
         
       </view>
     </view>
-  <button bindtap="onGeneratePoster">生成分享海报</button>
+    <view class="row">
+    <checkbox-group bindchange="onYAxisLabelChange">
+    <checkbox checked="{{showYAxisLabel}}" >显示金额</checkbox>
+  </checkbox-group>
+  <button class="ml" bindtap="onGeneratePoster">分享</button>
+</view>
   </view>
 </view>

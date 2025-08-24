@@ -27,6 +27,7 @@ var chatOption={
     name: '金额（元）',
     scale: true,
     axisLabel: {
+      show : true,
       margin: 2,
       formatter: function (value, index) {
           if (value >= 10000 && value < 10000000) {
@@ -68,6 +69,7 @@ Page({
   data: {
     totalExpense: 0,
     totalInvestment: 0,
+    showYAxisLabel: true,
     posterPath: '',
     showPoster: false,
     ec:{
@@ -106,8 +108,10 @@ Page({
   chatOption.series[0].data = chatData.yExpenseData;
   chatOption.series[1].data = chatData.yProfitData;
   chatOption.xAxis.data = chatData.xData;
-  if(chart)
+  chatOption.yAxis.axisLabel.show = this.data.showYAxisLabel;
+  if(chart){
   chart.setOption(chatOption);
+  }
   },
   navigateToExpense: function() {
     // 跳转到支出记录页面
@@ -115,13 +119,18 @@ Page({
       url: '/pages/expense/expense'
     });
   },
+  onYAxisLabelChange: function(e) {
+    const checked = e.detail.value.length > 0;
+    this.setData({ showYAxisLabel: checked });
+    chatOption.yAxis.axisLabel.show = checked;
+    if (chart) chart.setOption(chatOption);
+  },
   // 点击按钮生成分享图
   onGeneratePoster:function() {
     const ecComponent = this.selectComponent('#mychart-dom-bar');
     
     ecComponent.canvasToTempFilePath({
       success: res => {
-        console.log("tempFilePath:", res.tempFilePath)
         this.setData({
           posterPath: res.tempFilePath,
           showPoster: true
